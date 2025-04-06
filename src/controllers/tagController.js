@@ -14,7 +14,10 @@ const createTag = async (req, res) => {
 // Buscar todas as tags (Read)
 const getTags = async (req, res) => {
     try {
-        const tags = await Tag.findAll();
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const tags = await Tag.findAll({ limit, offset });
         res.json(tags);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao buscar tags', details: error.message });

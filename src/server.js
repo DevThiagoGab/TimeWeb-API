@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const sequelize = require("./config/database");
+const uploadRoutes = require('./routes/uploadRoutes');
 
 const app = express();
 app.use(express.json()); // Permite receber JSON
@@ -20,11 +21,15 @@ const itemRoutes = require('./routes/itemRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const itemTagRoutes = require('./routes/itemTagRoutes');
 const itemUserRoutes = require('./routes/itemUserRoutes');
+const auth = require('./middlewares/authMiddleware');
+
 app.use("/users", userRoutes);
-app.use('/items', itemRoutes);
-app.use('/tags', tagRoutes);
-app.use('/item-tags', itemTagRoutes);
-app.use('/item-user', itemUserRoutes);
+app.use('/items', auth, itemRoutes);
+app.use('/tags', auth, tagRoutes);
+app.use('/item-tags', auth, itemTagRoutes);
+app.use('/item-user', auth, itemUserRoutes);
+app.use('/upload', uploadRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // Rota principal
 app.get("/", (req, res) => {

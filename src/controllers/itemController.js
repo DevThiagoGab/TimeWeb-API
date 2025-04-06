@@ -16,7 +16,10 @@ const createItem = async (req, res) => {
 // Buscar todos os itens (Read)
 const getItems = async (req, res) => {
     try {
-        const items = await Item.findAll();
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const items = await Item.findAll({ limit, offset });
         res.json(items);
     } catch (error) {
         res.status(500).json({ error: 'Erro ao buscar itens', details: error.message });

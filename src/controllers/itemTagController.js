@@ -26,10 +26,13 @@ const addTagToItem = async (req, res) => {
 // Buscar todas as associações de itens com tags
 const getItemTags = async (req, res) => {
     try {
-        const itemTags = await ItemTag.findAll();
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = parseInt(req.query.offset) || 0;
+
+        const itemTags = await ItemTag.findAll({ limit, offset });
         res.json(itemTags);
     } catch (error) {
-        res.status(500).json({ error: 'Erro ao buscar associações', details: error.message });
+        res.status(500).json({ error: 'Erro ao buscar vínculos item-tag', details: error.message });
     }
 };
 

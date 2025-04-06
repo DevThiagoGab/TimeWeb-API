@@ -9,7 +9,7 @@ const ItemTag = sequelize.define('itemtag', {}, {
 });
 
 // Definindo as relações N:N entre Item e Tag
-Item.belongsToMany(Tag, { through: ItemTag });
-Tag.belongsToMany(Item, { through: ItemTag });
+Item.belongsToMany(Tag, { through: ItemTag, foreignKey: 'itemId', otherKey: 'tagId' });
+Tag.belongsToMany(Item, { through: ItemTag, foreignKey: 'tagId', otherKey: 'itemId' });
 
 module.exports = ItemTag;

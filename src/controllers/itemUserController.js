@@ -30,12 +30,16 @@ const addItemToUser = async (req, res) => {
 const getUserItems = async (req, res) => {
     try {
         const { userId } = req.params;
+        const limit = parseInt(req.query.limit) || 10;
+        const offset = parseInt(req.query.offset) || 0;
 
         const user = await User.findByPk(userId, {
-            include: {
+            include: [{
                 model: Item,
-                through: { attributes: [] }, // 🔹 Remove os dados intermediários desnecessários
-            },
+                through: { attributes: [] },
+                limit,
+                offset
+            }]
         });
 
         if (!user) {
